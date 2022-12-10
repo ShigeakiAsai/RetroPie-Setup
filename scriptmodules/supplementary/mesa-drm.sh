@@ -12,12 +12,12 @@
 rp_module_id="mesa-drm"
 rp_module_desc="libdrm - userspace library for drm"
 rp_module_licence="MIT https://www.mesa3d.org/license.html"
-rp_module_repo="git https://github.com/RetroPie/mesa-drm runcommand_debug"
+rp_module_repo="git https://gitlab.freedesktop.org/mesa/drm libdrm-2.4.114"
 rp_module_section="depends"
 rp_module_flags=""
 
 function depends_mesa-drm() {
-    local depends=(meson ninja-build libgbm-dev libdrm-dev libpciaccess-dev)
+    local depends=(meson ninja-build libgbm-dev libpciaccess-dev)
 
     getDepends "${depends[@]}"
 }
@@ -30,11 +30,28 @@ function build_mesa-drm() {
     local params=()
 
     # for RPI, disable all but VC4 driver to minimize startup delay
-    isPlatform "rpi" && params+=(-Dintel=false -Dradeon=false \
-                           -Damdgpu=false -Dexynos=false \
-                           -Dnouveau=false -Dvmwgfx=false \
-                           -Domap=false -Dfreedreno=false \
-                           -Dtegra=false -Detnaviv=false -Dvc4=true)
+    isPlatform "rpi" && params+=( \
+                           -Dintel=false \
+                           -Dradeon=false \
+                           -Damdgpu=false \
+                           -Dexynos=false \
+                           -Dnouveau=false \
+                           -Dvmwgfx=false \
+                           -Domap=false \
+                           -Dfreedreno=false \
+                           -Dtegra=false \
+                           -Detnaviv=false \
+                           -Dvc4=true \
+                           -Dglx=disabled \
+                           -Dplatforms= \
+                           -Dllvm=disabled \
+                           -Dvulkan-drivers=broadcom \
+                           -Ddri-drivers='' \
+                           -Dgallium-drivers=v3d,vc4,kmsro \
+                           -Dbuildtype=release \
+                           )
+
+
     meson builddir --prefix="$md_inst" "${params[@]}"
     ninja -C builddir
 
