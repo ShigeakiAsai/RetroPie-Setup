@@ -31,17 +31,17 @@ function build_mesa-drm() {
 
     # for RPI, disable all but VC4 driver to minimize startup delay
     isPlatform "rpi" && params+=( \
-                           -Dintel=false \
-                           -Dradeon=false \
-                           -Damdgpu=false \
-                           -Dexynos=false \
-                           -Dnouveau=false \
-                           -Dvmwgfx=false \
-                           -Domap=false \
-                           -Dfreedreno=false \
-                           -Dtegra=false \
-                           -Detnaviv=false \
-                           -Dvc4=true \
+                           -Dintel=disabled \
+                           -Dradeon=disabled \
+                           -Damdgpu=disabled \
+                           -Dexynos=disabled \
+                           -Dnouveau=disabled \
+                           -Dvmwgfx=disabled \
+                           -Domap=disabled \
+                           -Dfreedreno=disabled \
+                           -Dtegra=disabled \
+                           -Detnaviv=disabled \
+                           -Dvc4=enabled \
                            -Dglx=disabled \
                            -Dplatforms= \
                            -Dllvm=disabled \
